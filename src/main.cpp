@@ -18,15 +18,31 @@ void duoji_setup()
   myServo.attach(DUOJI_PIN); // 连接舵机信号引脚
   myServo.write(90);          // 初始位置为 0 度
   delay(1000);               // 等待舵机到达初始位置
+  myServo.detach();           // 释放舵机信号引脚
 }
 
 void duoji_loop(int len1)
 {
   // int len1 = 10;
   const int timeout = 20;
+  myServo.attach(DUOJI_PIN); // 连接舵机信号引脚
+  myServo.write(0); // 顺时针旋转 90 度
   for (int i = len1; i > 0; i = i - 1)
   {
-    myServo.write(0); // 顺时针旋转 90 度
+    delay(timeout);
+    if (i % 2 == 0)
+    {
+      digitalWrite(LED_PIN, LOW);
+    }
+    else
+    {
+      digitalWrite(LED_PIN, HIGH);
+    }
+  }
+  delay(1200);
+  myServo.write(90); // 逆时针旋转 90 度
+  for (int i = len1; i > 0; i = i - 1)
+  {
     delay(timeout);
     if (i % 2 == 0)
     {
@@ -38,19 +54,7 @@ void duoji_loop(int len1)
     }
   }
   delay(1300);
-  for (int i = len1; i > 0; i = i - 1)
-  {
-    myServo.write(90); // 逆时针旋转 90 度
-    delay(timeout);
-    if (i % 2 == 0)
-    {
-      digitalWrite(LED_PIN, LOW);
-    }
-    else
-    {
-      digitalWrite(LED_PIN, HIGH);
-    }
-  }
+  myServo.detach();           // 释放舵机信号引脚
 }
 
 void setup()
